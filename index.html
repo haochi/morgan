@@ -1,0 +1,30 @@
+<!doctype html5>
+<html lang="en">
+
+<head>
+    <title>Alfred</title>
+    <base href="/">
+</head>
+
+<body ng-controller="MainCtrl as main">
+    <div ng-view></div>
+    <script src="https://www.dropbox.com/static/api/dropbox-datastores-1.2-latest.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.4.0-beta.4/angular.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.4.0-beta.4/angular-route.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.7.0/underscore-min.js"></script>
+    <script src="/alfred.js"></script>
+    <script src="/app.js"></script>
+    <script>
+        var alfred, client;
+        Alfred.get('/dropbox.key', function (response) {
+            client = new Dropbox.Client({key: response.responseText.trim() });
+            alfred = new Alfred(client);
+            alfred.login(function (error) {
+                alfred.prepare(function (error) {
+                    angular.bootstrap(document.getElementsByTagName('html')[0], ['app']);
+                });
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,9 @@
+<a href="#/tasks/new">Create new task</a>
+
+<ul>
+    <li ng-repeat="task in tasks">
+        <p>{{ task.get('title') }}</p>
+        <div>{{ task.get('description') }}</div>
+        <a ng-click="delete(task)">&times;</a>
+    </li>
+</ul>
