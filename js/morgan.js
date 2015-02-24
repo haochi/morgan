@@ -12,7 +12,7 @@
         }
     };
 
-    function Alfred(dropboxClient) {
+    function Morgan(dropboxClient) {
         this.internal = {};
         this.tables = {};
 
@@ -20,7 +20,7 @@
         this.internal.dataStore = null;
     };
 
-    Alfred.prototype.login = function (callback) {
+    Morgan.prototype.login = function (callback) {
         var me = this;
 
         me.client.authenticate({interactive: true}, function (error) {
@@ -34,7 +34,7 @@
         }
     };
 
-    Alfred.prototype.prepare = function (callback) {
+    Morgan.prototype.prepare = function (callback) {
         var me = this,
             datastoreManager = me.client.getDatastoreManager();
 
@@ -57,7 +57,7 @@
         });
     };
 
-    Alfred.prototype.create = function (table, values) {
+    Morgan.prototype.create = function (table, values) {
         var me = this,
             tableRef = tables[table];
             var cleanedValues = _.chain(defaultValues(tableRef))
@@ -68,7 +68,7 @@
             me.tables[table].insert(cleanedValues);
     };
 
-    Alfred.get = function (url, callback) {
+    Morgan.get = function (url, callback) {
         var request = new XMLHttpRequest();
         request.onreadystatechange = function() {
             if (request.readyState === 4) {
@@ -80,7 +80,7 @@
         
     };
 
-    global.Alfred = Alfred;
+    global.Morgan = Morgan;
 
     function fieldNames(table) {
         return table.fields.map(function (field) {

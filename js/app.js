@@ -31,13 +31,13 @@ app.controller('HomeCtrl', ['$scope', '$routeParams',
     }
 ]);
 
-app.controller('TaskCtrl', ['$scope', '$routeParams', '$location', 'alfred',
-    function ($scope, $routeParams, $location, alfred) {
-        $scope.tasks = alfred.tables.tasks.query();
+app.controller('TaskCtrl', ['$scope', '$routeParams', '$location', 'morgan',
+    function ($scope, $routeParams, $location, morgan) {
+        $scope.tasks = morgan.tables.tasks.query();
         $scope.newTask = {};
 
         $scope.create = function () {
-            alfred.create('tasks', $scope.newTask);
+            morgan.create('tasks', $scope.newTask);
             $location.path('/tasks').replace();
         }
 
@@ -48,8 +48,8 @@ app.controller('TaskCtrl', ['$scope', '$routeParams', '$location', 'alfred',
     }
 ]);
 
-app.factory('alfred', ['$window',
+app.factory('morgan', ['$window',
     function ($window) {
-        return $window.alfred; // tad bit overkilled
+        return $window.morgan; // tad bit overkilled
     }
 ]);
