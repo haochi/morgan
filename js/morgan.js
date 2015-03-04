@@ -1,13 +1,72 @@
 (function (global, undefined) {
-    var tables = {
+    var specs = {
         tasks: {
             fields: [
-                { name: 'title', default: '' },
-                { name: 'description', default: '' },
-                { name: 'priority', default: 0 },
-                { name: 'status', default: 0 },
-                { name: 'parent', default: '' },
-                { name: 'created_at', default: function () { return new Date; } }
+                { 
+                    name: 'title',
+                    label: 'Title',
+                    type: 'string',
+                    default: '',
+                    required: true
+                },
+                { 
+                    name: 'description',
+                    label: 'Description',
+                    type: 'text',
+                    default: '',
+                    required: true
+                },
+                { 
+                    name: 'date',
+                    label: 'Due Date',
+                    type: 'date',
+                    default: new Date,
+                    required: true
+                },
+                {
+                    name: 'priority',
+                    label: 'Priority',
+                    type: 'list',
+                    default: 0,
+                    options: [
+                        { id: 0, display: 'When Free', order: 0 },
+                        { id: 1, display: 'ASAP', order: 1 },
+                        { id: 2, display: 'DEFCON 5', order: 2 }
+                    ],
+                    required: true
+                },
+                {
+                    name: 'status',
+                    label: 'Status',
+                    type: 'list',
+                    default: 1,
+                    required: true,
+                    options: [
+                        { id: 0, display: 'Fuck It', order: 1 },
+                        { id: 1, display: 'To Do', order: 2 },
+                        { id: 2, display: 'In Queue', order: 3},
+                        { id: 3, display: 'In Progress', order: 4},
+                        { id: 4, display: 'Done', order: 5}
+                    ]
+                },
+                {
+                    name: 'parent',
+                    label: 'Parent',
+                    type: 'string',
+                    default: ''
+                },
+                {
+                    name: 'created_at',
+                    default: function () {
+                        return new Date;
+                    }
+                },
+                {
+                    name: 'updated_at',
+                    default: function () {
+                        return new Date;
+                    }
+                },
             ]
         }
     };
@@ -15,6 +74,7 @@
     function Morgan(dropboxClient) {
         this.internal = {};
         this.tables = {};
+        this.specs = specs;
 
         this.client = dropboxClient;
         this.internal.dataStore = null;
@@ -45,7 +105,7 @@
 
             me.internal.dataStore = datastore;
 
-            Object.keys(tables).forEach(function (tableName) {
+            Object.keys(specs).forEach(function (tableName) {
                 Object.defineProperty(me.tables, tableName, { 
                     get: function () { 
                         return datastore.getTable(tableName);
@@ -59,14 +119,27 @@
 
     Morgan.prototype.create = function (table, values) {
         var me = this,
-            tableRef = tables[table];
-            var cleanedValues = _.chain(defaultValues(tableRef))
+            tableRef = specs[table],
+            cleanedValues = _.chain(defaultValues(tableRef))
                                 .extend(values)
                                 .pick(fieldNames(tableRef))
                                 .value();
 
             me.tables[table].insert(cleanedValues);
     };
+
+    Morgan.prototype.update = function (record, values) {
+        var me = this,
+            table = record.getTable().getId(),
+            tableRef = specs[table],
+            cleanedValues = _.chain(defaultValues(tableRef))
+                                .extend(record.getFields())
+                                .extend(values)
+                                .pick(fieldNames(tableRef))
+                                .value();
+
+        record.update(cleanedValues);
+    }
 
     Morgan.get = function (url, callback) {
         var request = new XMLHttpRequest();

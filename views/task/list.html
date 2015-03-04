@@ -1,9 +1,15 @@
-<a href="#/tasks/new">Create new task</a>
-
-<ul>
-    <li ng-repeat="task in tasks">
-        <p>{{ task.get('title') }}</p>
-        <div>{{ task.get('description') }}</div>
-        <a ng-click="delete(task)">&times;</a>
-    </li>
-</ul>
+<div layout="row" class="status-list" layout-margin layout-padding>
+    <div class="task-list" flex flex-order="{{ status }}" ng-repeat="(status, tasks) in tasksByStatus">
+        <h2>{{ statusById[status].display }}</h2>
+        <div>
+            <div class="task" ng-repeat="task in tasks">
+                <h3 ng-click="show(task)">{{ task.get('title') }}</h3>
+                <div>
+                    <md-button ng-click="next(task)">next</md-button>
+                    <md-button ng-click="edit(task)">edit</md-button>
+                    <md-button ng-click="delete(task)">delete</md-button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

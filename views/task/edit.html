@@ -1,0 +1,23 @@
+<form ng-submit="save()" layout="column" layout-fill layout-padding>
+    <div ng-repeat="field in fields">
+        <md-input-container ng-if="field.type === 'string' || field.type === 'date'">
+            <label>{{ field.label }}</label>
+            <input type="{{field.type}}" ng-model="task[field.name]" ng-required="field.required" />
+        </md-input-container>
+
+        <md-input-container ng-if="field.type === 'text'">
+            <label>{{ field.label }}</label>
+            <textarea ng-model="task[field.name]" ng-required="field.required"></textarea>
+        </md-input-container>
+
+        <md-input-container flex ng-if="field.type === 'list'" class="md-input-has-value">
+            <label>{{ field.label }}</label>
+            <select class="md-input" ng-options="opt.id as opt.display for opt in field.options" ng-model="task[field.name]" ></select>
+        </md-input-container>
+    </div>
+
+
+    <div layout="row" layout-align="center center">
+        <md-button type="submit" class="md-raised md-primary">Save Task</md-button>
+    </div>
+</form>
