@@ -4,9 +4,15 @@
 <head>
     <title>Morgan</title>
     <base href="/">
+    <script>
+        // force ssl
+        var securedPage = location.protocol === "https:" || location.hostname === "localhost";
+        if(!securedPage) location.href = location.href.replace(/^http:/i, "https:");;
+        // less.js config
+        var less = { async: true };
+    </script>
     <link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/angular_material/0.8.2/angular-material.min.css">
     <link rel="stylesheet/less" type="text/css" href="/css/style.less" />
-    <script>var less = { async: true };</script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/less.js/2.3.1/less.min.js"></script>
 </head>
 
