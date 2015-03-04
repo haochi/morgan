@@ -1,8 +1,7 @@
-Morgan
-======
+Morgan: Your personal assistant
+===============================
 
-Your personal assistant
------------------------
+Morgan is a personal management thingy that uses the Dropbox DataStore API.
 
 Get it running
 ==============
